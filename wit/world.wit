@@ -1,0 +1,13 @@
+package cosmonic-labs:desktop-s3-notes@0.2.0;
+
+// wasmcloud:blobstore imported under `(implements ..)` labels. WIT allows one
+// interface per label, so `blobstore` (get-container) is `assets`, the S3
+// binding named `assets` in Cosmonic Desktop (Settings -> Built-in plugins ->
+// S3), and `container` (the object methods) is `assets-objects`. A container
+// resource keeps the backend it was opened on, so its methods reach S3
+// whichever label they arrive through.
+world s3-notes {
+    import assets: wasmcloud:blobstore/blobstore@0.1.0;
+    import assets-objects: wasmcloud:blobstore/container@0.1.0;
+    export wasi:http/handler@0.3.0;
+}

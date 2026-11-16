@@ -1,0 +1,33 @@
+# Apply after adding an S3 binding named `assets` in Cosmonic Desktop
+# (Settings -> Built-in plugins -> S3) and restarting the host.
+# Then open http://s3-notes.localhost:8200/
+apiVersion: runtime.wasmcloud.dev/v1alpha1
+kind: Workload
+metadata:
+  name: s3-notes
+  namespace: default
+  annotations:
+    # A locally built sample is unsigned.
+    desktop.cosmonic.com/unsafe-allow-unsigned: "true"
+spec:
+  components:
+    - name: s3-notes
+      image: oci.localhost:8200/apps/desktop-s3-notes:0.2.0
+  hostInterfaces:
+    - namespace: wasi
+      package: http
+      interfaces: [handler]
+      config:
+        host: s3-notes.localhost
+    # `blobstore` (get-container) under the S3 binding's name. Only the
+    # name: the endpoint and keys belong to the host's binding.
+    - namespace: wasmcloud
+      package: blobstore
+      interfaces: [blobstore]
+      name: assets
+    # `container` under its own label (WIT allows one interface per label).
+    # Containers opened through `assets` keep the S3 backend.
+    - namespace: wasmcloud
+      package: blobstore
+      interfaces: [container]
+      name: assets-objects

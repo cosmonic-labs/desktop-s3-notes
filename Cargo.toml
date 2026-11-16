@@ -1,0 +1,19 @@
+[package]
+name = "desktop-s3-notes"
+description = "A Cosmonic Desktop sample: notes in an S3 bucket, through wasmCloud's blobstore S3 backend"
+edition = "2021"
+version = "0.2.0"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wit-bindgen = { version = "0.60.0", features = ["async-spawn", "inter-task-wakeup"] }
+serde_json = "1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

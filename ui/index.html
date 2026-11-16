@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3 Notes · Cosmonic Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #685BC7; --purple-dark: #5446b3; --space: #002E5D; --gunmetal: #253746;
+    --gray: #768692; --gainsboro: #D9E1E2; --yellow: #FFB600; --bg: #f4f7fa; --card: #fff;
+    --danger: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Work Sans", Arial, sans-serif; background: var(--bg); color: var(--gunmetal); }
+  header { background: var(--space); color: #fff; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  header .mark { width: 26px; height: 30px; color: var(--purple); filter: brightness(1.35); }
+  header .brand { font-weight: 600; letter-spacing: .02em; }
+  header .sep { opacity: .35; }
+  header .app { font-weight: 500; opacity: .9; }
+  header .pill { margin-left: auto; font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.12); }
+  header .pill.ok::before, header .pill.err::before { content: "●"; margin-right: 6px; }
+  header .pill.ok::before { color: #3ddc97; }
+  header .pill.err::before { color: var(--yellow); }
+  main { max-width: 1040px; margin: 32px auto; padding: 0 20px; }
+  h1 { font-size: 26px; margin: 0 0 6px; color: var(--space); }
+  .lede { margin: 0 0 24px; color: var(--gray); line-height: 1.5; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; background: #eceff3; padding: 1px 5px; border-radius: 4px; }
+  .layout { display: grid; grid-template-columns: 280px 1fr; gap: 18px; align-items: start; }
+  .panel { background: var(--card); border: 1px solid var(--gainsboro); border-radius: 12px; box-shadow: 0 1px 2px rgba(0,46,93,.05); }
+  .panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--gray); margin: 0; padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: center; }
+  ul { list-style: none; margin: 0; padding: 0 8px 8px; }
+  li button { width: 100%; text-align: left; display: flex; justify-content: space-between; gap: 8px; background: transparent; color: var(--gunmetal); font-weight: 500; padding: 9px 10px; border-radius: 8px; }
+  li button:hover { background: #f1f0fb; }
+  li button.active { background: #e7e4f8; color: var(--purple-dark); }
+  li .size { color: var(--gray); font-size: 12px; font-weight: 400; }
+  .empty { color: var(--gray); font-size: 14px; padding: 8px 16px 16px; }
+  .editor { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  input, textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--gainsboro); border-radius: 8px; background: #fff; color: var(--gunmetal); width: 100%; }
+  textarea { min-height: 320px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; line-height: 1.5; }
+  input:focus, textarea:focus { outline: 2px solid var(--purple); outline-offset: 1px; border-color: var(--purple); }
+  .bar { display: flex; gap: 10px; align-items: center; }
+  .bar .spacer { flex: 1; }
+  .hint { font-size: 13px; color: var(--gray); }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 8px; padding: 10px 16px; cursor: pointer; background: var(--purple); color: #fff; }
+  button:hover { background: var(--purple-dark); }
+  button.secondary { background: #efedfa; color: var(--purple); }
+  button.secondary:hover { background: #e2def6; }
+  button.danger { background: transparent; color: var(--danger); }
+  button.danger:hover { background: #fbeceb; }
+  button.small { padding: 4px 10px; font-size: 13px; }
+  .error { background: #fff4d6; border: 1px solid #ffd666; color: #6b4b00; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; display: none; }
+  footer { max-width: 1040px; margin: 40px auto; padding: 0 20px; font-size: 13px; color: var(--gray); line-height: 1.6; }
+  footer a { color: var(--purple); }
+  @media (max-width: 720px) { .layout { grid-template-columns: 1fr; } header .app, header .sep { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <svg class="mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.97 93.65"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path fill="currentColor" d="M38.92,72.16c-4.7-12.57-10.87-18.69-23.5-23.39a2.08,2.08,0,0,1,0-3.9c12.63-4.69,18.8-10.82,23.5-23.39a2.06,2.06,0,0,1,3.92.12c3.8,12.69,8.19,21.32,37,21.87A2.07,2.07,0,0,0,82,41.41V27.12a7.41,7.41,0,0,0-3.67-6.41L44.72,1a7.4,7.4,0,0,0-7.47,0L3.67,20.71A7.45,7.45,0,0,0,0,27.13V66.56A7.43,7.43,0,0,0,3.68,73L37.26,92.64a7.36,7.36,0,0,0,7.45,0L78.3,73A7.45,7.45,0,0,0,82,66.56V52.26a2.08,2.08,0,0,0-2.11-2.08C51,50.73,46.63,59.36,42.84,72A2.06,2.06,0,0,1,38.92,72.16Z"></path></g></g></svg>
+  <span class="brand">Cosmonic</span><span class="sep">/</span><span class="app">S3 Notes</span>
+  <span id="status" class="pill">connecting…</span>
+</header>
+<main>
+  <h1>Notes in an S3 bucket</h1>
+  <p class="lede">A WebAssembly component on Cosmonic Desktop. It imports <code>wasmcloud:blobstore</code> as
+    <code>(implements assets)</code>; the host routes that to the S3 binding named <code>assets</code>.
+    Each note is one object in the bucket <code id="bucket">cosmonic-notes</code>. The component never sees the endpoint or the keys.</p>
+  <div id="error" class="error" role="alert"></div>
+  <div class="layout">
+    <section class="panel" aria-label="Notes">
+      <h2><span>Notes</span><button id="new" class="secondary small">New</button></h2>
+      <ul id="list"></ul>
+    </section>
+    <section class="panel editor" aria-label="Editor">
+      <input id="name" placeholder="note-name.md" maxlength="128" aria-label="Note name">
+      <textarea id="body" placeholder="Write something. It is stored as an S3 object." aria-label="Note text"></textarea>
+      <div class="bar">
+        <span id="hint" class="hint"></span>
+        <span class="spacer"></span>
+        <button id="delete" class="danger">Delete</button>
+        <button id="save">Save</button>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>
+  Check the bucket directly with any S3 client, e.g. <code>aws --endpoint-url http://127.0.0.1:9000 s3 ls s3://cosmonic-notes</code>. ·
+  <a href="https://github.com/cosmonic-labs/desktop-s3-notes">Source</a>
+</footer>
+<script>
+  const el = (id) => document.getElementById(id);
+  const NAME = /^[A-Za-z0-9_-][A-Za-z0-9._-]{0,127}$/;
+  let current = null;
+
+  const showError = (msg) => { const e = el("error"); e.textContent = msg; e.style.display = msg ? "block" : "none"; };
+  const status = (ok, text) => { const s = el("status"); s.className = "pill " + (ok ? "ok" : "err"); s.textContent = text; };
+  const fmt = (n) => n < 1024 ? n + " B" : (n / 1024).toFixed(1) + " KB";
+
+  async function call(method, path, body) {
+    const res = await fetch(path, { method, body });
+    const type = res.headers.get("content-type") || "";
+    const data = type.includes("json") ? await res.json().catch(() => ({})) : await res.text();
+    if (!res.ok) throw new Error((data && data.error) || res.status + " " + res.statusText);
+    return data;
+  }
+
+  function select(name) {
+    current = name;
+    el("name").value = name || "";
+    el("delete").style.visibility = name ? "visible" : "hidden";
+    for (const b of el("list").querySelectorAll("button")) b.classList.toggle("active", b.dataset.name === name);
+  }
+
+  async function refresh() {
+    try {
+      const { bucket, notes } = await call("GET", "/api/notes");
+      el("bucket").textContent = bucket;
+      const list = el("list");
+      list.replaceChildren();
+      if (!notes.length) {
+        const empty = document.createElement("li");
+        empty.className = "empty";
+        empty.textContent = "No notes yet. Write one and save it.";
+        list.append(empty);
+      }
+      for (const n of notes) {
+        const li = document.createElement("li");
+        const b = document.createElement("button");
+        b.dataset.name = n.name;
+        b.innerHTML = '<span class="n"></span><span class="size"></span>';
+        b.querySelector(".n").textContent = n.name;
+        b.querySelector(".size").textContent = fmt(n.size);
+        b.onclick = () => open(n.name);
+        li.append(b);
+        list.append(li);
+      }
+      select(current);
+      status(true, "S3: connected");
+      showError("");
+    } catch (e) {
+      status(false, "S3: unavailable");
+      showError(e.message);
+    }
+  }
+
+  async function open(name) {
+    try {
+      el("body").value = await call("GET", "/api/notes/" + encodeURIComponent(name));
+      select(name);
+      el("hint").textContent = "Loaded from S3";
+    } catch (e) { showError(e.message); }
+  }
+
+  el("new").onclick = () => { select(null); el("body").value = ""; el("hint").textContent = ""; el("name").focus(); };
+
+  el("save").onclick = async () => {
+    const name = el("name").value.trim();
+    if (!NAME.test(name)) { showError("A note name is letters, digits, '-', '_' or '.', up to 128."); return; }
+    try {
+      const r = await call("PUT", "/api/notes/" + encodeURIComponent(name), el("body").value);
+      current = name;
+      el("hint").textContent = "Saved " + fmt(r.size) + " to S3";
+      await refresh();
+    } catch (e) { showError(e.message); }
+  };
+
+  el("delete").onclick = async () => {
+    if (!current) return;
+    try {
+      await call("DELETE", "/api/notes/" + encodeURIComponent(current));
+      select(null); el("body").value = ""; el("hint").textContent = "Deleted";
+      await refresh();
+    } catch (e) { showError(e.message); }
+  };
+
+  select(null);
+  refresh();
+</script>
+</body>
+</html>
