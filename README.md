@@ -5,7 +5,7 @@ using [wasmCloud's S3 blobstore backend](https://wasmcloud.com/docs/kubernetes-o
 as configured in [Cosmonic Desktop](https://cosmonic.com). It works with AWS S3
 or any S3-compatible server; the sample uses SeaweedFS.
 
-![S3 Notes](docs/screenshot.png)
+![S3 Notes running on Cosmonic Desktop](docs/s3-notes.png)
 
 The component imports `wasmcloud:blobstore` under `(implements ..)` labels:
 
